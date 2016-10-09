@@ -1,0 +1,7 @@
+tiddlywiki_install_directory: "/opt/tiddlywiki"
+tiddlywiki_instances: []
+tiddlywiki_data_directory: "/opt/"
+tiddlywiki_log_directory: "/var/log/tiddlywiki"
+tiddlywiki_owner: "tiddly"
+tiddlywiki_group: "tiddly"
+tiddlywiki_ns_prefix: "computer.yolo.tiddlywiki"

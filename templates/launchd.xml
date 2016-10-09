@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- {{ansible_managed}} -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>{{tidlywiki_ns_prefix}}.{{item.name}}</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/usr/local/bin/node</string>
+      <string>/usr/local/bin/tiddlywiki</string>
+      <string>{{item.path}}</string>
+      <string>--server</string>
+      <string>{{item.port}}</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>WorkingDirectory</key>
+    <string>{{item.path}}</string>
+    <key>StandardErrorPath</key>
+    <string>{{tiddlywiki_log_directory}}/{{item.name}}-error.log</string>
+    <key>StandardOutputPath</key>
+    <string>{{tiddlywiki_log_directory}}/{{item.name}}-output.log</string>
+  </dict>
+</plist>

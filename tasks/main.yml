@@ -1,0 +1,23 @@
+- name: "fetch tiddlywiki repo"
+  git:
+    repo: "https://github.com/Jermolene/TiddlyWiki5"
+    dest: "{{tiddlywiki_install_directory}}"
+- file:
+    owner: "{{tiddlywiki_owner}}"
+    group: "{{tiddlywiki_group}}"
+    path: "{{tiddlywiki_install_directory}}"
+    recurse: "yes"
+- npm:
+    name: tiddlywiki
+    global: yes
+- name: check for wiki
+  stat:
+    path: "{{item.path}}"
+  register: tiddlywiki_stat
+  with_items: "{{tiddlywiki_instances}}"
+- name: initialize wiki
+  command: tiddlywiki "{{item.item.path}}" --init "{{item.item.edition}}"
+  when: not item.stat.exists
+  with_items: "{{tiddlywiki_stat.results}}"
+- include: "osx.yml"
+  when: ansible_system == "Darwin"
