@@ -4,7 +4,7 @@
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>{{tidlywiki_ns_prefix}}.{{item.name}}</string>
+    <string>{{tiddlywiki_ns_prefix}}.{{item.name}}</string>
     <key>ProgramArguments</key>
     <array>
       <string>/usr/local/bin/node</string>
