@@ -1,0 +1,13 @@
+[Unit]
+Description={{item.name}}
+After=syslog.target
+
+[Service]
+SyslogIdentifier=tiddlywiki-{{item.name}}
+Restart=always
+StandardOutput=syslog
+ExecStart=/usr/local/nodejs/default/bin/tiddlywiki {{item.path}} --server {{item.port}}
+User={{tiddlywiki_owner}}
+
+[Install]
+WantedBy=multi-user.target
