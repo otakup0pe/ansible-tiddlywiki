@@ -1,0 +1,1 @@
+tiddlywiki_launchdir: "{{ansible_user_dir}}/Library/LaunchAgents/"

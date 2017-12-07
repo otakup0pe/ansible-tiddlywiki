@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+problems() {
+    echo "Error: ${1}"
+    exit 1
+}
+
+tiddly="$(readlink -f "$(which tiddlywiki)")"
+
+if [ -z "$EDITION" ] ; then
+    EDITION="server"
+fi
+if [ -z "$PORT" ] ; then
+    PORT="8080"
+fi
+
+if [ ! -e "/opt/tiddlers/tiddlywiki.info" ] ; then
+    /usr/bin/env node "$tiddly" /opt/tiddlers --init "$EDITION"
+fi
+/usr/bin/env node "$tiddly" /opt/tiddlers --server "$PORT"

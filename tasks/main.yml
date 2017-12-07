@@ -1,6 +1,7 @@
+---
 - npm:
     name: tiddlywiki
-    global: yes
+    global: true
 - name: check for wiki
   stat:
     path: "{{item.path}}"
@@ -14,3 +15,32 @@
   when: ansible_system == "Darwin"
 - include: "linux.yml"
   when: ansible_system == "Linux"
+- name: "create a config directory"
+  file:
+    path: "{{tiddlywiki_install_directory}}/etc"
+    state: directory
+    owner: "{{tiddlywiki_owner}}"
+    group: "{{tiddlywiki_group}}"
+    mode: 0770
+- name: "generate tiddlyctl config"
+  template:
+    src: "tiddlyctl.j2"
+    dest: "{{tiddlywiki_install_directory}}/etc/tiddlyctl"
+    owner: "{{tiddlywiki_owner}}"
+    group: "{{tiddlywiki_group}}"
+    mode: 0660
+- name: "copy tiddlyctl script"
+  copy:
+    src: "tiddlyctl.sh"
+    dest: "{{tiddlywiki_bin_directory}}/tiddlyctl"
+    owner: "{{tiddlywiki_owner}}"
+    group: "{{tiddlywiki_group}}"
+    mode: "0770"
+- name: "generate tiddlyrc"
+  template:
+    src: "tiddlyrc"
+    dest: "{{tiddlywiki_profile_path}}/.tiddlyrc"
+    owner: "{{tiddlywiki_owner}}"
+    group: "{{tiddlywiki_group}}"
+    mode: "0660"
+  when: tiddlywiki_rc
