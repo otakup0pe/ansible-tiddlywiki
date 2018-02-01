@@ -15,8 +15,7 @@ if [ -z "$OS" ] ; then
     OS="$(uname -s)"
 fi
 
-TIDDLYCTL_CONFIG=""
-if [ -z "$TIDDLYCTL_CONFIG" ] ; then
+if [ -z "${TIDDLYCTL_CONFIG+x}" ] ; then
     TIDDLYCTL_CONFIG="/opt/tiddlywiki/etc/tiddlyctl"
 fi
 # shellcheck disable=SC1090
