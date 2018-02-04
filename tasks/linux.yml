@@ -9,7 +9,9 @@
   when: tiddlywiki_systemd_user == "root"
 - name: "ensure systemd user path exists"
   file:
-    path: "{{tiddlywiki_systemd_home}}/{{tiddlywiki_systemd_user}}/.config/systemd/user"
+    path: >
+      {{tiddlywiki_systemd_home}}/{{tiddlywiki_systemd_user}}
+      /.config/systemd/user
     state: directory
     owner: "{{tiddlywiki_systemd_user}}"
     group: "{{tiddlywiki_systemd_group}}"
@@ -18,7 +20,9 @@
 - name: "systemd user config"
   template:
     src: "systemd.service"
-    dest: "{{tiddlywiki_systemd_home}}/{{tiddlywiki_systemd_user}}/.config/systemd/user/{{item.name}}.service"
+    dest: >
+      {{tiddlywiki_systemd_home}}/{{tiddlywiki_systemd_user}}
+      /.config/systemd/user/{{item.name}}.service
     owner: "{{tiddlywiki_systemd_user}}"
     group: "{{tiddlywiki_systemd_group}}"
     mode: 0660

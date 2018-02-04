@@ -9,6 +9,6 @@ tiddlywiki_ns_prefix: "computer.yolo.tiddlywiki"
 tiddlywiki_bin_directory: "/usr/local/bin"
 tiddlywiki_profile_path: "/etc/profile.d"
 tiddlywiki_rc: true
-tiddlywiki_systemd_user: root # or username
+tiddlywiki_systemd_user: "root"  # or username
 tiddlywiki_systemd_group: "{{tiddlywiki_systemd_user}}"
 tiddlywiki_systemd_home: ""

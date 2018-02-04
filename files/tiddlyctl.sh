@@ -26,7 +26,7 @@ fi
 
 if [ $# == 1 ] && [ "$1" == "list" ] ; then
     if [ "$OS" == "Darwin" ] ; then
-        launchctl list | grep "$TIDDLYWIKI_NS_PREFIX"
+        launchctl list | grep "$TIDDLYWIKI_NS_PREFIX" | awk '{ print $3 }' | rev | cut -d '.' -f 1 | rev
     fi
     exit 0
 fi
