@@ -1,13 +1,5 @@
-- name: "systemd config"
-  template:
-    src: "systemd.service"
-    dest: "/etc/systemd/system/{{item.name}}.service"
-    owner: "root"
-    group: "root"
-  with_items: "{{tiddlywiki_instances}}"
-- name: "enable tiddlywikis"
-  service:
-    name: "{{item.name}}"
-    enabled: "yes"
-    state: "started"
-  with_items: "{{tiddlywiki_instances}}"
+---
+- include: "systemd.yml"
+  when: '"microsoft" not in ansible_kernel|lower'
+- include: "wsl.yml"
+  when: '"microsoft" in ansible_kernel|lower'

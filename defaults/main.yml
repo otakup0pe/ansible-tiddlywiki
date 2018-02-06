@@ -1,3 +1,4 @@
+---
 tiddlywiki_install_directory: "/opt/tiddlywiki"
 tiddlywiki_instances: []
 tiddlywiki_data_directory: "/opt/"
@@ -5,3 +6,10 @@ tiddlywiki_log_directory: "/var/log/tiddlywiki"
 tiddlywiki_owner: "tiddly"
 tiddlywiki_group: "tiddly"
 tiddlywiki_ns_prefix: "computer.yolo.tiddlywiki"
+tiddlywiki_bin_directory: "/usr/local/bin"
+tiddlywiki_profile_path: "/etc/profile.d"
+tiddlywiki_rc: true
+tiddlywiki_init_user: "root"  # or username
+tiddlywiki_init_group: "{{tiddlywiki_init_user}}"
+tiddlywiki_init_home: ""
+tiddlywiki_pid_directory: "/var/run"

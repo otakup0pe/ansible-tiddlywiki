@@ -1,0 +1,7 @@
+# -*-Shell-script-*-
+
+export TIDDLYWIKI_NS_PREFIX="{{tiddlywiki_ns_prefix}}"
+export TIDDLYWIKIS="{% for t in tiddlywiki_instances %}{{ t.name }}{% if not loop.last %} {% endif %}{% endfor %}"
+{% if ansible_os_family == 'Debian' and 'microsoft' in ansible_kernel|lower %}
+export TIDDLYWIKI_INIT="{{tiddlywiki_init_home}}/etc/init.d"
+{% endif %}

@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+import os
+import re
+from argparse import ArgumentParser
+import yaml
+
+
+def find_tiddlers(path):
+    real_path = "%s/tiddlers/" % path
+    patt = re.compile('tags: .*export.*')
+    npatt = re.compile('title: (.*)')
+    tiddlers = []
+    for f in os.listdir(real_path):
+        reader = open("%s/tiddlers/%s" % (path, f), 'r')
+        contents = reader.read()
+        reader.close()
+        if patt.search(contents):
+            m = npatt.search(contents)
+            if m:
+                tiddlers.append(m.group(1))
+
+    return tiddlers
+
+def main():
+    parser = ArgumentParser(description='extract-tiddlers')
+    parser.add_argument('notes_folder', help='notes folder')
+    args = parser.parse_args()
+    config = yaml.load(open("%s/_config.yml" % args.notes_folder, 'r'))
+
+    dest = "%s/_extractions/" % args.notes_folder
+    for tiddler in find_tiddlers(config['tiddlywiki']):
+        cmd = "tiddlywiki %s --rendertiddler \"%s\" /tmp/aa" % (config['tiddlywiki'], tiddler)
+        print(cmd)
+        res = os.system(cmd)
+        print(res)
+        reader = open('/tmp/aa', 'r')
+        linkname = tiddler.lower().replace(' ', '-').replace('/', '-')
+        writer = open("%s%s.html" % (dest, linkname), 'w')
+        writer.write("---\nlayout: page\ntitle: %s\n---\n" % (tiddler))
+        writer.write(reader.read())
+        writer.close()
+        reader.close()
+
+if __name__ == '__main__':
+    main()

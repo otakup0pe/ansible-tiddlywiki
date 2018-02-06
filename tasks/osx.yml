@@ -1,20 +1,25 @@
+---
 - name: "launchd config"
   template:
     src: launchd.xml
-    dest: "{{ansible_user_dir}}/Library/LaunchAgents/{{tiddlywiki_ns_prefix}}.{{item.name}}.plist"
+    dest: "{{tiddlywiki_launchdir}}{{tiddlywiki_ns_prefix}}.{{item.name}}.plist"
   with_items: "{{tiddlywiki_instances}}"
   register: launchd_config
 - name: "check for running services"
   shell: "launchctl list | grep {{tiddlywiki_ns_prefix}}.{{item.item.name}}"
-  ignore_errors: yes
+  ignore_errors: true
   with_items: "{{launchd_config.results}}"
   register: launchd_running
 # complex restarting needs a module eh
 - name: "unload launchd profile"
-  command: "launchctl unload {{ansible_user_dir}}/Library/LaunchAgents/{{tiddlywiki_ns_prefix}}.{{item.item.item.name}}.plist"
+  command: >
+    launchctl unload
+    {{tiddlywiki_launchdir}}{{tiddlywiki_ns_prefix}}.{{item.item.item.name}}.plist
   with_items: "{{launchd_running.results}}"
   when: "item.item.changed and item.rc == 0"
 - name: "load launchd profile"
-  command: "launchctl load {{ansible_user_dir}}/Library/LaunchAgents/{{tiddlywiki_ns_prefix}}.{{item.item.item.name}}.plist"
+  command: >
+    launchctl load
+    {{tiddlywiki_launchdir}}{{tiddlywiki_ns_prefix}}.{{item.item.item.name}}.plist
   with_items: "{{launchd_running.results}}"
   when: "item.item.changed or item.rc == 1"
