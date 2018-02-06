@@ -1,0 +1,16 @@
+---
+- name: "create not-init directory"
+  file:
+    path: "{{tiddlywiki_init_home}}/etc/init.d"
+    owner: "{{tiddlywiki_init_user}}"
+    group: "{{tiddlywiki_init_group}}"
+    mode: "0700"
+    state: directory
+- name: "create wsl not-init script"
+  template:
+    src: "tiddlywsl.sh"
+    dest: "{{tiddlywiki_init_home}}/etc/init.d/{{item.name}}"
+    owner: "{{tiddlywiki_init_user}}"
+    group: "{{tiddlywiki_init_group}}"
+    mode: "0700"
+  with_items: "{{tiddlywiki_instances}}"

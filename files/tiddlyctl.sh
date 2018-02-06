@@ -13,6 +13,10 @@ problems() {
 declare OS
 if [ -z "$OS" ] ; then
     OS="$(uname -s)"
+    if [ "$OS" == "Linux" ] && \
+           uname -v | grep "Mirosoft" &> /dev/null ; then
+        OS="WSL"
+    fi
 fi
 
 if [ -z "${TIDDLYCTL_CONFIG+x}" ] ; then
@@ -25,9 +29,7 @@ if [ ! -e "$TIDDLYCTL_CONFIG" ] ; then
 fi
 
 if [ $# == 1 ] && [ "$1" == "list" ] ; then
-    if [ "$OS" == "Darwin" ] ; then
-        launchctl list | grep "$TIDDLYWIKI_NS_PREFIX" | awk '{ print $3 }' | rev | cut -d '.' -f 1 | rev
-    fi
+    #TBD
     exit 0
 fi
 
@@ -41,20 +43,29 @@ shift 2
 if [ "$ACTION" == "status" ] ; then
     if [ "$OS" == "Darwin" ] ; then
         ST=$(launchctl list | grep "${TIDDLYWIKI_NS_PREFIX}.${TWIKI}" | awk '{ print $1 }')
-    fi
-    if [ -z "$ST" ] || [ "$ST" == "-" ] ; then
-        echo "Not running"
-        exit 1
+        if [ -z "$ST" ] || [ "$ST" == "-" ] ; then
+            echo "Not running"
+            exit 1
+        else
+            echo "Running"
+            exit 0
+        fi
+    elif [ "$OS" == "WSL" ] ; then
+        "${TIDDLYWIKI_INIT}/${TWIKI}" "$ACTION"
     else
-        echo "Running"
-        exit 0
+        echo "unsupported context"
+        exit 1
     fi
-elif [ "$ACTION" == "stop" ] ; then
+elif [ "$ACTION" == "stop" ] || [ "$ACTION" == "start" ] ; then
     if [ "$OS" == "Darwin" ] ; then
-        launchctl stop "${TIDDLYWIKI_NS_PREFIX}.${TWIKI}"
+        launchctl "$ACTION" "${TIDDLYWIKI_NS_PREFIX}.${TWIKI}"
+    elif [ "$OS" == "WSL" ] ; then
+        "${TIDDLYWIKI_INIT}/${TWIKI}" "$ACTION"
+    else
+        echo "unsupported context"
+        exit 1
     fi
-elif [ "$ACTION" == "start" ] ; then
-    if [ "$OS" == "Darwin" ] ; then
-        launchctl start "${TIDDLYWIKI_NS_PREFIX}.${TWIKI}"
-    fi
+else
+    echo "unsupported action"
+    exit 1
 fi
