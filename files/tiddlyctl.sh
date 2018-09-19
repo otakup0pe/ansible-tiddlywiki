@@ -29,7 +29,11 @@ if [ ! -e "$TIDDLYCTL_CONFIG" ] ; then
 fi
 
 if [ $# == 1 ] && [ "$1" == "list" ] ; then
-    #TBD
+    if [ -z "$TIDDLYWIKIS" ] ; then
+        echo "no wikis configured"
+    else
+        echo -e "${TIDDLYWIKIS// /'\n'}"
+    fi
     exit 0
 fi
 
