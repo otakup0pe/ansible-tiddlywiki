@@ -1,6 +1,6 @@
 # -*-Shell-script-*-
 
 export TIDDLYCTL_CONFIG="{{tiddlywiki_install_directory}}/etc/tiddlyctl"
-if ! which tiddlctl &> /dev/null ; then
+if ! grep -q "{{tiddlywiki_bin_directory}}" <<< "$PATH" ; then
     PATH="${PATH}:{{tiddlywiki_bin_directory}}"
 fi
