@@ -7,7 +7,7 @@
     group: "{{tiddlywiki_init_group}}"
     mode: 0770
   with_items: "{{tiddlywiki_instances}}"
-  when: titiddlywiki_init_user == "root"
+  when: tiddlywiki_init_user == "root"
 - name: "ensure systemd user path exists"
   file:
     path: >
